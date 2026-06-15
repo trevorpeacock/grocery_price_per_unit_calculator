@@ -130,6 +130,7 @@
             font-size: 20px;
             font-weight: 700;
             color: #000;
+            text-wrap: nowrap;
         }
 
         .result-item:last-child {
@@ -247,7 +248,15 @@
 
         function formatMoney(amount) {
             if (amount < 1) {
-                return Math.round(amount * 100) + 'c';
+                // Show at least 2 significant digits for cents
+                const cents = amount * 100;
+                if (cents < 1) {
+                    return cents.toFixed(2) + 'c';
+                } else if (cents < 10) {
+                    return cents.toFixed(1) + 'c';
+                } else {
+                    return Math.round(cents) + 'c';
+                }
             }
             return '$' + amount.toFixed(2);
         }
