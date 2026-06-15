@@ -2,6 +2,8 @@
 
 A simple, self-contained web application to calculate standardized prices for supermarket items. Enter a price and quantity to instantly see price comparisons per standard units.
 
+[View the live application](https://trevorpeacock.github.io/grocery_price_per_unit_calculator/)
+
 ## Features
 
 - Calculate price per unit for any product
@@ -15,14 +17,9 @@ A simple, self-contained web application to calculate standardized prices for su
 ## How to Use
 
 1. Enter the **Price** in dollars ($)
-2. Enter the **Quantity** in grams, milliliters, or units
-3. The equivalent quantity in kilograms or liters is automatically calculated
-4. View price comparisons per 100g, 1kg, 100mL, 1L, and per unit
-5. Click "Copy" on any result to copy it to your clipboard
-
-## Live Demo
-
-[View the live application](https://trevorpeacock.github.io/grocery_price_per_unit_calculator/)
+2. Enter the **Quantity** in grams, kilograms, milliliters, liters, or units
+3. View price comparisons per 1g, 100g, 1kg, 1mL, 100mL, 1L, and per unit
+4. Click "Copy" on any result to copy it to your clipboard
 
 ## Technical Details
 
@@ -30,7 +27,3 @@ A simple, self-contained web application to calculate standardized prices for su
 - Pure HTML, CSS, and JavaScript
 - No build process required
 - Works offline once loaded
-
-## Repository
-
-[GitHub Repository](https://github.com/trevorpeacock/grocery_price_per_unit_calculator)
