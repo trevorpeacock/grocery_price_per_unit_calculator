@@ -123,7 +123,12 @@
             padding: 12px 16px;
             background: #f8f9fa;
             border-radius: 8px;
-            width: 50%;
+            flex: 1 0 0;
+        }
+
+        .result-item.empty {
+            display: flex;
+            background: none;
         }
 
         .result-value {
@@ -131,15 +136,8 @@
             font-weight: 700;
             color: #000;
             text-wrap: nowrap;
-        }
-
-        .result-item:last-child {
-            border-bottom: none;
-        }
-
-        .result-label {
-            font-size: 16px;
-            color: #555;
+            width: 0;
+            overflow: visible;
         }
 
         .copy-btn {
@@ -150,7 +148,8 @@
             padding: 6px 12px;
             font-size: 14px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 1s ease-in, opacity 1s ease-in;
+            min-width: 75px;
         }
 
         .copy-btn:hover {
@@ -159,6 +158,12 @@
 
         .copy-btn:active {
             background: #4e5ebf;
+        }
+
+        .copy-btn.copied {
+            background: #28a745;
+            opacity: 0.8;
+            transition: none;
         }
 
         .note {
@@ -227,6 +232,8 @@
                             <span class="result-value" id="result-unit"></span>
                             <button class="copy-btn" data-result="unit">Copy</button>
                         </div>
+                        <div class="result-item empty">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -245,6 +252,9 @@
         const quantityKgInput = document.getElementById('quantity-kg');
         const resultsContainer = document.getElementById('results-container');
         const instructionContainer = document.getElementById('instruction-container');
+
+        // Track the last copied result
+        let lastCopiedResult = null;
 
         function formatMoney(amount) {
             if (amount < 1) {
@@ -411,17 +421,39 @@
         });
 
         // Copy text to clipboard
+        function copyToClipboard(resultId) {
+            const resultValue = document.getElementById('result-' + resultId).textContent;
+            navigator.clipboard.writeText(resultValue).then(function() {
+                const btn = document.querySelector('.copy-btn[data-result="' + resultId + '"]');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(function() {
+                    btn.textContent = 'Copy';
+                    btn.classList.remove('copied');
+                }, 1000);
+            });
+        }
+
+        // Copy handler for copy buttons
         document.querySelectorAll('.copy-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 const resultId = this.getAttribute('data-result');
-                const resultValue = document.getElementById('result-' + resultId).textContent;
-                navigator.clipboard.writeText(resultValue);
-                this.textContent = 'Copied!';
-                setTimeout(function() {
-                    this.textContent = 'Copy';
-                }.bind(this), 1500);
+                copyToClipboard(resultId);
+                lastCopiedResult = resultId;
             });
         });
+
+        // Auto-copy the last copied result when price or quantity changes
+        function autoCopyLastResult() {
+            if (lastCopiedResult) {
+                copyToClipboard(lastCopiedResult);
+            }
+        }
+
+        // Add auto-copy to price and quantity inputs
+        priceInput.addEventListener('input', autoCopyLastResult);
+        quantityGInput.addEventListener('input', autoCopyLastResult);
+        quantityKgInput.addEventListener('input', autoCopyLastResult);
     </script>
 </body>
 </html>
